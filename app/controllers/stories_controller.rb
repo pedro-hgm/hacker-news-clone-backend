@@ -1,21 +1,29 @@
 class StoriesController < ApplicationController
-  def initialize
-    @stories = Story::Stories.new
-  end
+  before_action :set_stories
 
   def index
-    top_stories = @stories.stories
-    render json: top_stories, status: :ok
+    ids = @stories.stories_ids
+    render json: ids, status: :ok
   end
 
-  def comments
-    # comments = Story::Stories.new
-    comments = @stories.story_comments(params[:ids])
-    render json: comments, status: :ok
+  def show
+    story = @stories.story(params[:id])
+    render json: story, status: :ok
+  end
+
+  def comment
+    comment = @stories.story_comments(params[:id])
+    render json: comment, status: :ok
   end
 
   def search
     result = @stories.search_stories(params[:query])
     render json: result, status: :ok
+  end
+
+  private
+
+  def set_stories
+    @stories = Stories::Story.new
   end
 end

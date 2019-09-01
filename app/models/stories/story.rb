@@ -1,5 +1,5 @@
-module Story
-  class Stories
+module Stories
+  class Story
     def initialize
       @main_api = Api::HackerNewsApi.new
       @search_api = Api::HackerNewsSearchApi.new
@@ -11,19 +11,18 @@ module Story
       ids[0..14]
     end
 
-    def stories(ids = self.stories_ids())
-      stories = ids.map { |id| @main_api.get_item(id) }
-      @formatter.story(stories)
+    def story(id)
+      story = @main_api.get_item(id)
+      @formatter.story(story)
     end
 
-    def story_comments(ids)
-      comments = ids.map { |id| @main_api.get_item(id) }
-      @formatter.comment(comments)
+    def story_comments(id)
+      comment = @main_api.get_item(id)
+      @formatter.comment(comment)
     end
 
     def search_stories(query)
       ids = @search_api.get_latest_stories(query)
-      self.stories(ids)
     end
   end
 end

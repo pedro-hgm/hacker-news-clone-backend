@@ -1,29 +1,26 @@
 module Helpers
   class Formatter
-    def story(stories)
-      stories.map do |story|
-        {
-          id: story["id"],
-          title: story["title"] || "No title provided",
-          url: story["url"] || "#",
-          author: story["by"] || "No author provided",
-          date: self.date(story["time"]),
-          comments: story["kids"] || [],
-        }
-      end
+    def story(story)
+      {
+        id: story["id"],
+        title: story["title"] || "No title provided",
+        url: story["url"] || "#",
+        author: story["by"] || "No author provided",
+        date: self.date(story["time"]),
+        comments: story["kids"] || [],
+        comments_count: story["descendants"],
+      }
     end
 
-    def comment(comments)
-      comments.map do |comment|
-        next unless Helpers::Validates.relevant_comment?(comment["text"])
-        {
-          id: comment["id"],
-          author: comment["by"] || "No author provided",
-          text: comment["text"],
-          date: comment["time"],
-          nested: false || comment["kids"],
-        }
-      end
+    def comment(comment)
+      return unless comment["text"] && Helpers::Validates.relevant_comment?(comment["text"])
+      {
+        id: comment["id"],
+        author: comment["by"] || "No author provided",
+        text: comment["text"],
+        date: self.date(comment["time"]),
+        nested: false || comment["kids"],
+      }
     end
 
     def date(date)

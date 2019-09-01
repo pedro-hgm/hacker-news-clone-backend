@@ -25,7 +25,7 @@ module Backend
     # rack-cors config
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins "localhost:3000, https://hackernewsvue.netlify.com/"
+        origins "http://localhost:8080", "http://localhost:3000", "https://hackernewsvue.netlify.com"
         resource "*", headers: :any, methods: [:get, :post, :put, :patch, :delete, :options, :head]
       end
     end
