@@ -14,10 +14,5 @@ module Stories
       story = @main_api.get_item(id)
       story ? @formatter.story(story) : false
     end
-
-    def story_comments(id)
-      comment = @main_api.get_item(id)
-      comment ? @formatter.comment(comment) : false
-    end
   end
 end

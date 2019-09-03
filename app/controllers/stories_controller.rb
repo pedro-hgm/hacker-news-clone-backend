@@ -1,30 +1,35 @@
 class StoriesController < ApplicationController
-  before_action :set_stories
+  before_action :set_story
+  before_action :set_comment, only: [:comment]
 
   def index
-    ids = @stories.ids()
+    ids = @story.ids()
     render_item(ids)
   end
 
   def show
-    story = @stories.show(params[:id])
+    story = @story.show(params[:id])
     render_item(story)
   end
 
   def comment
-    comment = @stories.story_comments(params[:id])
+    comment = @comment.show(params[:id])
     render_item(comment)
   end
 
   def search
-    ids = @stories.ids(params[:query])
+    ids = @story.ids(params[:query])
     render_item(ids)
   end
 
   private
 
-  def set_stories
-    @stories = Stories::Story.new
+  def set_story
+    @story = Stories::Story.new
+  end
+
+  def set_comment
+    @comment = Stories::Comment.new
   end
 
   def render_item(item)
