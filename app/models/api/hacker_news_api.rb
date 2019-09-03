@@ -1,9 +1,8 @@
 module Api
   class HackerNewsApi
     def initialize
-      @base_uri = Api::BaseUri.new
-      @uri = @base_uri.get_main_api_base_uri()
-      @validator = Utils::Validator.new
+      @uri = Api::BaseUri.new.get_main_api_base_uri()
+      @valid_item = Utils::Validators::ValidItens.new
     end
 
     def fetch_top_stories_ids
@@ -17,7 +16,7 @@ module Api
 
     def get_top_stories_ids
       ids = self.fetch_top_stories_ids
-      @validator.valid_itens?(ids, Array) ? top_15_ids = ids[0..14] : false
+      @valid_item.execute(ids, Array) ? top_15_ids = ids[0..14] : false
     end
 
     def fetch_item(id)

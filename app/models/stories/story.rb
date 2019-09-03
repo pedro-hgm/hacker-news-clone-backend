@@ -3,7 +3,7 @@ module Stories
     def initialize
       @main_api = Api::HackerNewsApi.new
       @search_api = Api::HackerNewsSearchApi.new
-      @formatter = Utils::Formatter.new
+      @story_formatter = Utils::Formatters::StoryFormatter.new
     end
 
     def ids(query = false)
@@ -12,7 +12,7 @@ module Stories
 
     def show(id)
       story = @main_api.get_item(id)
-      story ? @formatter.story(story) : false
+      story ? @story_formatter.execute(story) : false
     end
   end
 end
