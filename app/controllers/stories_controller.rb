@@ -2,28 +2,36 @@ class StoriesController < ApplicationController
   before_action :set_stories
 
   def index
-    ids = @stories.stories_ids
-    render json: ids, status: :ok
+    ids = @stories.ids()
+    render_item(ids)
   end
 
   def show
-    story = @stories.story(params[:id])
-    render json: story, status: :ok
+    story = @stories.show(params[:id])
+    render_item(story)
   end
 
   def comment
     comment = @stories.story_comments(params[:id])
-    render json: comment, status: :ok
+    render_item(comment)
   end
 
   def search
-    result = @stories.search_stories(params[:query])
-    render json: result, status: :ok
+    ids = @stories.ids(params[:query])
+    render_item(ids)
   end
 
   private
 
   def set_stories
     @stories = Stories::Story.new
+  end
+
+  def render_item(item)
+    if item
+      render json: item, status: :ok
+    else
+      render json: { message: "No item could be found" }, status: :not_found
+    end
   end
 end

@@ -1,5 +1,9 @@
-module Helpers
+module Utils
   class Formatter
+    def initialize
+      @validator = Utils::Validator.new
+    end
+
     def story(story)
       {
         id: story["id"],
@@ -13,7 +17,7 @@ module Helpers
     end
 
     def comment(comment)
-      return unless comment["text"] && Helpers::Validates.relevant_comment?(comment["text"])
+      return unless comment["text"] && @validator.relevant_comment?(comment["text"])
       {
         id: comment["id"],
         author: comment["by"] || "No author provided",
