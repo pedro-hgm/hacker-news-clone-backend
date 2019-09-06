@@ -7,11 +7,13 @@ module ApiManager
       @query = query
       @limit = limit
       @id_formatter = UtilsManager::FormattersManager::IdFormatter
+      @validate_stories = UtilsManager::ValidatorsManager::TypeAndPresenceValidator
     end
 
     def execute()
       latest_stories = fetch_latest_stories(@query)
-      latest_stories ? @id_formatter.execute(latest_stories) : false
+      return false unless @validate_stories.execute(latest_stories, Array)
+      @id_formatter.execute(latest_stories)
     end
 
     private

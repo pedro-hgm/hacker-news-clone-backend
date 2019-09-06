@@ -5,11 +5,13 @@ module ApiManager
     def initialize(id = 0)
       @uri = ApiManager::UriManager::MainApiUri.execute()
       @id = id
+      @validate_item = UtilsManager::ValidatorsManager::TypeAndPresenceValidator
     end
 
     def execute()
       item = fetch_item(@id)
-      item ? item : false
+      return false unless @validate_item.execute(item, Hash)
+      item
     end
 
     private
