@@ -3,14 +3,15 @@ module ApiManager
     include Executable
 
     def initialize(id = 0)
-      @uri = ApiManager::UriManager::MainApiUri.execute()
+      @uri = UriManager::MainApiUri.execute()
       @id = id
       @validate_item = UtilsManager::ValidatorsManager::TypeAndPresenceValidator
+      @http = ApiManager::HttpRequestsCreator
     end
 
     def execute()
       item = fetch_item(@id)
-      return false unless @validate_item.execute(item, Hash)
+      return false unless item && @validate_item.execute(item, Hash)
       item
     end
 
@@ -18,9 +19,9 @@ module ApiManager
 
     def fetch_item(id)
       begin
-        response = RestClient.get("#{@uri}item/#{id}.json")
+        response = @http.execute(verb: :get, url: "#{@uri}item/#{id}.json")
         JSON.parse(response.body)
-      rescue RestClient::ExceptionWithResponse
+      rescue ErrorHandler::RequestError => e
         false
       end
     end
