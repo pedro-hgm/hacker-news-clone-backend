@@ -8,11 +8,13 @@ module ApiManager
       @limit = limit
       @id_formatter = UtilsManager::FormattersManager::IdFormatter
       @validate_stories = UtilsManager::ValidatorsManager::TypeAndPresenceValidator
+      @http = ApiManager::HttpRequestsCreator
+      @log = UtilsManager::LoggerCreator.new(file: "latest_stories_requests.log").logger
     end
 
     def execute()
       latest_stories = fetch_latest_stories(@query)
-      return false unless @validate_stories.execute(latest_stories, Array)
+      return false unless latest_stories && @validate_stories.execute(latest_stories, Array)
       @id_formatter.execute(latest_stories)
     end
 
@@ -20,9 +22,10 @@ module ApiManager
 
     def fetch_latest_stories(query)
       begin
-        response = RestClient.get("#{@uri}search_by_date?query=#{query}&tags=story&hitsPerPage=#{@limit}")
+        response = @http.execute(verb: :get, url: "#{@uri}search_by_date?query=#{query}&tags=story&hitsPerPage=#{@limit}")
         JSON.parse(response.body)["hits"]
-      rescue RestClient::ExceptionWithResponse
+      rescue ErrorHandler::RequestError => e
+        @log.error("#{e.message} with #{e.action} request")
         false
       end
     end

@@ -6,5 +6,3 @@ class RequestError < StandardError
     @action = action
   end
 end
-
-# raise PermissionDeniedError.new("Permission Denied", :delete)

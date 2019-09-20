@@ -1,0 +1,2 @@
+# Logfile created on 2019-09-20 14:25:05 -0300 by logger.rb/66358
+E, [2019-09-20T14:28:46.917000 #1202] ERROR -- : 404 Not Found
