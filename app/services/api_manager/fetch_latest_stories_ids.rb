@@ -2,13 +2,13 @@ module ApiManager
   class FetchLatestStoriesIds
     include Executable
 
-    def initialize(query, limit = 10)
-      @uri = ApiManager::UriManager::SecondApiUri.execute()
+    def initialize(query:, limit: 10)
+      @uri = UriManager::SecondApi::BASE_URI
       @query = query
       @limit = limit
       @id_formatter = UtilsManager::FormattersManager::IdFormatter
       @validate_stories = UtilsManager::ValidatorsManager::TypeAndPresenceValidator
-      @http = ApiManager::HttpRequestsCreator
+      @http = HttpRequestsCreator
       @log = UtilsManager::LoggerCreator.new(file: "latest_stories_requests.log").logger
     end
 

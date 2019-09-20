@@ -2,11 +2,11 @@ module ApiManager
   class FetchItem
     include Executable
 
-    def initialize(id = 0)
-      @uri = UriManager::MainApiUri.execute()
+    def initialize(id:)
+      @uri = UriManager::MainApi::BASE_URI
       @id = id
       @validate_item = UtilsManager::ValidatorsManager::TypeAndPresenceValidator
-      @http = ApiManager::HttpRequestsCreator
+      @http = HttpRequestsCreator
       @log = UtilsManager::LoggerCreator.new(file: "item_requests.log").logger
     end
 

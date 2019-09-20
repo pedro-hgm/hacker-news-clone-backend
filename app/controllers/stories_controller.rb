@@ -5,17 +5,17 @@ class StoriesController < ApplicationController
   end
 
   def show
-    story = StoriesManager::StoryCreator.execute(params[:id])
+    story = StoriesManager::StoryCreator.execute(id: params[:id])
     render_item(story)
   end
 
   def comment
-    comment = StoriesManager::CommentCreator.execute(params[:id])
+    comment = StoriesManager::CommentCreator.execute(id: params[:id])
     render_item(comment)
   end
 
   def search
-    ids = ApiManager::FetchLatestStoriesIds.execute(params[:query])
+    ids = ApiManager::FetchLatestStoriesIds.execute(query: params[:query])
     render_item(ids)
   end
 
