@@ -1,8 +1,10 @@
-class RequestError < StandardError
-  attr_reader :action
+module ErrorHandler
+  class RequestError < StandardError
+    attr_reader :action
 
-  def initialize(message:, action:)
-    super(message)
-    @action = action
+    def initialize(message:, action:)
+      super(message)
+      @action = action
+    end
   end
 end

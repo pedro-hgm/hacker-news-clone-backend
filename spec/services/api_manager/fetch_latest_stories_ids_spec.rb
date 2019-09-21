@@ -3,10 +3,9 @@ require "rails_helper"
 
 RSpec.describe ApiManager::FetchLatestStoriesIds do
   describe "execute" do
-    it "returns an array of latest stories ids" do
-      api_fetch_latest_stories = double("ApiManager::FetchLatestStoriesIds")
-      query = "Human"
-      story = {
+    let(:query) { "Human" }
+    let(:story) {
+      {
         "by": "headalgorithm",
         "descendants": 1,
         "id": 20880789,
@@ -19,10 +18,24 @@ RSpec.describe ApiManager::FetchLatestStoriesIds do
         "type": "story",
         "url": "https://www.sciencemag.org/news/2019/09/human-speech-may-have-universal-transmission-rate-39-bits-second",
       }
-      allow(api_fetch_latest_stories).to receive(:execute).with(kind_of(String)).and_return(story)
-      response = api_fetch_latest_stories.execute(query)
-      expect(response).to be_a(Hash)
-      expect(response[:title]).to match query
+    }
+
+    context "with a query" do
+      it "returns an array of latest stories ids" do
+        api_fetch_latest_stories = instance_double("ApiManager::FetchLatestStoriesIds.new(#{query})")
+        allow(api_fetch_latest_stories).to receive(:execute).and_return(story)
+        response = api_fetch_latest_stories.execute()
+        expect(response).to be_a(Hash)
+        expect(response[:title]).to match query
+      end
+    end
+
+    context "withour a query" do
+      it "raises an ArgumentError" do
+        api_fetch_latest_stories = instance_double("ApiManager::FetchLatestStoriesIds")
+        allow(api_fetch_latest_stories).to receive(:execute).and_raise(ArgumentError)
+        expect { api_fetch_latest_stories.execute() }.to raise_error(ArgumentError)
+      end
     end
   end
 end
