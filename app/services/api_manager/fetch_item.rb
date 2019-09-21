@@ -7,7 +7,7 @@ module ApiManager
       @id = id
       @validate_item = UtilsManager::ValidatorsManager::TypeAndPresenceValidator
       @http = HttpRequestsCreator
-      @log = UtilsManager::LoggerCreator.new(file: "item_requests.log").logger
+      @log = UtilsManager::LoggerCreator.new(file: "log/item_requests.log").logger
     end
 
     def execute()

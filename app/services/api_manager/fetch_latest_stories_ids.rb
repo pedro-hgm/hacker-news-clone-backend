@@ -9,7 +9,7 @@ module ApiManager
       @id_formatter = UtilsManager::FormattersManager::IdFormatter
       @validate_stories = UtilsManager::ValidatorsManager::TypeAndPresenceValidator
       @http = HttpRequestsCreator
-      @log = UtilsManager::LoggerCreator.new(file: "latest_stories_requests.log").logger
+      @log = UtilsManager::LoggerCreator.new(file: "log/latest_stories_requests.log").logger
     end
 
     def execute()

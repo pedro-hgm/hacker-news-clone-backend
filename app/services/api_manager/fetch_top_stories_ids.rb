@@ -7,7 +7,7 @@ module ApiManager
       @limit = limit
       @validate_ids = UtilsManager::ValidatorsManager::TypeAndPresenceValidator
       @http = HttpRequestsCreator
-      @log = UtilsManager::LoggerCreator.new(file: "top_stories_requests.log").logger
+      @log = UtilsManager::LoggerCreator.new(file: "log/top_stories_requests.log").logger
     end
 
     def execute()
